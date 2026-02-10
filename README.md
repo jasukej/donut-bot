@@ -3,7 +3,7 @@ A Slack bot that facilitates weekly donuts in your workspace's specified channel
 
 Members of the channel are automatically synced each round; members can join the channel to be eligible and leave to opt out.
 
-## We used:
+## We used
 - Supabase: Edge Functions (Deno), PSQL, pg_cron
 - Slack web API
 
