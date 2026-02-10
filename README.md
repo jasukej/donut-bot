@@ -123,8 +123,10 @@ INSERT INTO user_avoid_list (user_id, avoid_user_id) VALUES ('U01234567', 'U0765
 A client-side interface for this is still a WIP.
 
 ## Local Development
-
+Docker Desktop is needed to spin up dependencies locally.
 ```bash
 supabase start
 supabase functions serve
 ```
+
+Lint by running `deno lint`.

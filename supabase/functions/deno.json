@@ -3,6 +3,7 @@
   "imports": {
     "@shared": "./_shared/mod.ts",
     "@shared/handler": "./_shared/handler.ts",
-    "@shared/messages": "./_shared/messages.ts"
+    "@shared/messages": "./_shared/messages.ts",
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@2"
   }
 }

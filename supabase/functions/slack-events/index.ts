@@ -3,7 +3,7 @@
 */
 
 import { supabase, verifySlackSignature } from "@shared";
-import { serve, jsonResponse, errorResponse, requireEnv } from "@shared/handler";
+import { serve, jsonResponse, requireEnv } from "@shared/handler";
 import {
   ACTION_DID_YOU_MEET_YES,
   ACTION_DID_YOU_MEET_NO,

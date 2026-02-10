@@ -10,7 +10,7 @@ declare namespace Deno {
   ): void;
 }
 
-declare module "npm:@supabase/supabase-js@2" {
+declare module "@supabase/supabase-js" {
   type QueryBuilder = {
     eq(col: string, val: unknown): QueryBuilder;
     not(col: string, op: string, val: unknown): QueryBuilder;
