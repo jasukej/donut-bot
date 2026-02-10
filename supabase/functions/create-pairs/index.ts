@@ -12,6 +12,34 @@ serve(async () => {
   const slackToken = requireEnv("SLACK_BOT_TOKEN");
   if (slackToken instanceof Response) return slackToken;
 
+  // check if enough time has passed since last round before writing to db
+  const { data: intervalRow } = await supabase
+    .from("config")
+    .select("value")
+    .eq("key", "pairing_interval_days")
+    .single();
+
+  const intervalDays = intervalRow ? Number((intervalRow as ConfigValue).value) : 7;
+
+  const { data: lastRound } = await supabase
+    .from("rounds")
+    .select("round_date")
+    .order("round_date", { ascending: false })
+    .limit(1)
+    .single();
+
+  if (lastRound) {
+    const lastDate = new Date((lastRound as { round_date: string }).round_date);
+    const daysSince = Math.floor((Date.now() - lastDate.getTime()) / 86_400_000);
+    if (daysSince < intervalDays - 1) {
+      return jsonResponse({
+        message: "Skipping — not yet time for next round",
+        days_since_last: daysSince,
+        interval_days: intervalDays,
+      });
+    }
+  }
+
   const { data: configRow } = await supabase
     .from("config")
     .select("value")

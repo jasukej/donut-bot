@@ -71,48 +71,32 @@ Check `users` and `matches` in Dashboard > Table Editor. Click a Yes/No button i
 
 ## Configuration
 
-`pg_cron` calls the Edge Functions on the following schedule:
+### Schedule
+
+`pg_cron` runs `create-pairs` every Monday at 9am UTC. The function checks `pairing_interval_days` in the config table and skips if not enough days have passed since the last round. Default interval is 7 days (weekly).
 
 | Function | Cron | When |
 |----------|------|------|
-| `create-pairs` | `0 9 * * 1` | Mondays 09:00 UTC -- syncs users, creates pairings, opens group DMs |
+| `create-pairs` | `0 9 * * 1` | Mondays 09:00 UTC -- syncs users, creates pairings (skips if too soon) |
 | `post-reminder` | `0 17 * * 0` | Sundays 17:00 UTC -- sends "did you meet?" message |
 | `weekly-summary` | `0 17 * * 5` | Fridays 17:00 UTC -- posts stats to channel |
 
-### Changing the schedule
+### Changing pairing frequency
 
-To change how often pairings happen, run the following in the SQL Editor. Replace the cron expression with your desired frequency.
-
-**Common presets:**
-
-| Frequency | Cron expression |
-|-----------|----------------|
-| Every Monday 9am UTC | `0 9 * * 1` |
-| Every other Monday 9am UTC | `0 9 1-7,15-21 * 1` |
-| First Monday of each month | `0 9 1-7 * 1` |
-| Every weekday 9am UTC | `0 9 * * 1-5` |
+Run via SQL:
 
 ```sql
--- 1. Update stored frequency
-UPDATE config SET value = '"0 9 * * 1"'::jsonb WHERE key = 'frequency';
+-- Every 2 weeks
+UPDATE config SET value = '14'::jsonb WHERE key = 'pairing_interval_days';
 
--- 2. Replace the cron job
-SELECT cron.unschedule('donut-create-pairs');
-SELECT cron.schedule(
-  'donut-create-pairs',
-  (SELECT value #>> '{}' FROM config WHERE key = 'frequency'),
-  $$ SELECT net.http_post(
-    url     := (SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name = 'project_url') || '/functions/v1/create-pairs',
-    headers := jsonb_build_object('Content-Type','application/json','Authorization','Bearer ' || (SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name = 'pub_key')),
-    body    := '{}'::jsonb
-  ) AS request_id; $$
-);
+-- Every 3 weeks
+UPDATE config SET value = '21'::jsonb WHERE key = 'pairing_interval_days';
+
+-- Monthly
+UPDATE config SET value = '30'::jsonb WHERE key = 'pairing_interval_days';
 ```
 
-You can verify the current schedule with:
-```sql
-SELECT jobname, schedule FROM cron.job WHERE jobname LIKE 'donut-%';
-```
+Note that the cron job is fixed at `0 9 * * 1` (every Monday). `create_pairs` decides whether to actually write based on how many days have elapsed since the last round.
 
 ## Optional: Avoid List
 
@@ -120,7 +104,6 @@ To prevent specific users from being paired:
 ```sql
 INSERT INTO user_avoid_list (user_id, avoid_user_id) VALUES ('U01234567', 'U07654321');
 ```
-A client-side interface for this is still a WIP.
 
 ## Local Development
 Docker Desktop is needed to spin up dependencies locally.
@@ -132,3 +115,7 @@ supabase functions serve
 Lint by running `deno lint`.
 
 Friendly reminder to keep the deploy and db actions up-to-date ie. if you are adding a new function.
+
+## Working on
+* Admin panel for user-friendly configs
+* RLS for adding to avoid list
