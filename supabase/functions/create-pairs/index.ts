@@ -84,8 +84,8 @@ serve(async () => {
   const roundId = (roundData as RoundIdResult).id;
 
   /**
-  * Calls a db procedure to compute matches and store them under /matches
-  * Procedure greedily matches pairs based on last matched date and avoids users in the ban list
+  * Calls a procedure to compute matches and store them under /matches
+  * Greedily matches pairs based on last matched date and avoids users in the ban list
   */
   const { data: matchesData, error: matchesError } = await supabase.rpc(
     "compute_coffee_chat_matches",
