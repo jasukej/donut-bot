@@ -130,3 +130,5 @@ supabase functions serve
 ```
 
 Lint by running `deno lint`.
+
+Friendly reminder to keep the deploy and db actions up-to-date ie. if you are adding a new function.
