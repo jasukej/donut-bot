@@ -1,0 +1,31 @@
+# Supabase local development config
+# https://supabase.com/docs/guides/cli/config
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[studio]
+enabled = true
+port = 54323
+
+# Edge Functions - JWT disabled for webhooks and cron triggers
+[functions.slack-events]
+verify_jwt = false
+
+[functions.create-pairs]
+verify_jwt = false
+
+[functions.post-reminder]
+verify_jwt = false
+
+[functions.weekly-summary]
+verify_jwt = false

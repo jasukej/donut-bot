@@ -1,0 +1,32 @@
+{
+  "_metadata": {
+    "major_version": 2,
+    "minor_version": 1
+  },
+  "display_information": {
+    "name": "Donut Bot",
+    "description": "Facilitates one-on-one pairings in a Slack channel.",
+    "background_color": "#4A154B"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "Donut Bot",
+      "always_online": true
+    },
+    "interactivity": {
+      "is_enabled": true,
+      "request_url": "https://YOUR_PROJECT_REF.supabase.co/functions/v1/slack-events"
+    }
+  },
+  "oauth_config": {
+    "scopes": {
+      "bot": [
+        "chat:write",
+        "mpim:write",
+        "users:read",
+        "channels:read",
+        "groups:read"
+      ]
+    }
+  }
+}
