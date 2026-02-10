@@ -11,7 +11,7 @@ export const MATCH_INTRO =
   "You've been matched for a donut! Schedule a time to meet :)";
 
 export const MEET_REMINDER_FALLBACK =
-  "Reminder: Did you have your coffee chat this week?";
+  "Quick reminder: Did you have your coffee chat this week?";
 
 export function buildDidYouMeetBlocks(
   matchId: string,
@@ -52,7 +52,7 @@ export interface SummaryCounts {
 
 export function buildSummaryText(roundDate: string, counts: SummaryCounts): string {
   return [
-    "This week's donut dates:",
+    "*Some 🍩 stats for you:*",
     `_Round ${roundDate}_`,
     "",
     `${counts.met} out of ${counts.total} met. Let's get that to 100% this week!`,

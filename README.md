@@ -1,9 +1,9 @@
-# PMC Donut Bot
-A Slack bot that facilitates weekly donuts in your workspace's specified channel. Existing free marketplace solutions are capped at ~20 members at a time, hence the need. 
+# slack donut bot 🍩
+Slack bot that facilitates weekly donuts in your workspace for unlimited members. Free marketplace solutions are capped at ~20 members at a time, hence the need. 
 
-Members of the channel are automatically synced each round; members can join the channel to be eligible and leave to opt out.
+Members of the specified channel are automatically synced each round; members can join the channel to be eligible and leave to opt out.
 
-## We used
+## Used
 - Supabase: Edge Functions (Deno), PSQL, pg_cron
 - Slack web API
 
