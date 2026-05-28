@@ -19,7 +19,7 @@ serve(async () => {
     .eq("key", "pairing_interval_days")
     .single();
 
-  const intervalDays = intervalRow ? Number((intervalRow as ConfigValue).value) : 7;
+  const intervalDays = parseIntervalDays((intervalRow as ConfigValue | null)?.value);
 
   const { data: lastRound } = await supabase
     .from("rounds")
@@ -31,7 +31,7 @@ serve(async () => {
   if (lastRound) {
     const lastDate = new Date((lastRound as { round_date: string }).round_date);
     const daysSince = Math.floor((Date.now() - lastDate.getTime()) / 86_400_000);
-    if (daysSince < intervalDays - 1) {
+    if (daysSince < intervalDays) {
       return jsonResponse({
         message: "Skipping — not yet time for next round",
         days_since_last: daysSince,
@@ -158,3 +158,19 @@ serve(async () => {
 
   return jsonResponse({ message: "Matches created", round_id: roundId, groups_count: groups.length });
 });
+
+function parseIntervalDays(value: unknown): number {
+  if (typeof value === "number" && Number.isFinite(value) && value >= 1) {
+    return Math.floor(value);
+  }
+
+  if (typeof value === "string") {
+    const unquoted = value.replace(/^"|"$/g, "").trim();
+    const parsed = Number(unquoted);
+    if (Number.isFinite(parsed) && parsed >= 1) {
+      return Math.floor(parsed);
+    }
+  }
+
+  return 7;
+}

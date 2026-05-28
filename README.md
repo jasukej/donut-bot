@@ -118,4 +118,4 @@ Friendly reminder to keep the deploy and db actions up-to-date ie. if you are ad
 
 ## Working on
 * Admin panel for user-friendly configs ie. setting the pairing frequency, which can only be done in SQL for now
-* RLS for adding to avoid list
+* Enable JWT for functions
