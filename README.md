@@ -78,7 +78,7 @@ Check `users` and `matches` in Dashboard > Table Editor. Click a Yes/No button i
 | Function | Cron | When |
 |----------|------|------|
 | `create-pairs` | `0 9 * * 1` | Mondays 09:00 UTC -- syncs users, creates pairings (skips if too soon) |
-| `post-reminder` | `0 17 * * 0` | Sundays 17:00 UTC -- sends "did you meet?" message |
+| `post-reminder` | `0 17 * * 0` | Sundays 17:00 UTC -- sends midpoint scheduling nudge, then final "did you meet?" check once interval elapses |
 | `weekly-summary` | `0 17 * * 5` | Fridays 17:00 UTC -- posts stats to channel |
 
 ### Changing pairing frequency

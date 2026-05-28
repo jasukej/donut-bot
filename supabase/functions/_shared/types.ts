@@ -27,6 +27,8 @@ export interface Match {
   participant_ids: string[];
   matched_at: string;
   met_status: MetStatus;
+  midpoint_reminder_sent_at: string | null;
+  final_reminder_sent_at: string | null;
   created_at: string;
   updated_at: string;
 }
